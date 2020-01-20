@@ -1,0 +1,223 @@
+﻿@model MvcCrud_1.Models.UsersModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div align="right" style="padding:10px;">
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#AddUser"><i class="fa fa-plus"></i> User</button>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">C# MVC Ajax Crud</h3>
+
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Middlename</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="body" id="list">
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Middlename</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel3">Add User</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <form id="FormUser" name="FormUser">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Firstname <span id="ErrFirstname" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="Firstname" id="Firstname" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Middlename <span id="ErrMiddlename" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="Middlename" id="Middlename" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Surname <span id="ErrSurname" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="Surname" id="Surname" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Email <span id="ErrEmail" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        <input type="text" class="form-control" name="Email" id="Email" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="panel-footer" align="right">
+                    <img src="~/Assets/img/loader.gif" id="LoadingImage" style="display:none" />
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="return _add();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Add User Modal -->
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel3">Edit User</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <form id="FormUser" name="FormUser">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Firstname <span id="EErrFirstname" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="EFirstname" id="EFirstname" />
+                                        <input type="hidden" class="form-control" name="EUserID" id="EUserID" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Middlename <span id="EErrMiddlename" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="EMiddlename" id="EMiddlename" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Surname <span id="EErrSurname" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                        <input type="text" class="form-control" name="ESurname" id="ESurname" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Email <span id="EErrEmail" style="color:red;"></span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        <input type="text" class="form-control" name="EEmail" id="EEmail" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="panel-footer" align="right">
+                    <img src="~/Assets/img/loader.gif" id="LoadingImage2" style="display:none" />
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="return _edit();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Edit User Modal -->
+
+
+    <!-- Remove User Modal -->
+    <div class="modal fade" id="RemoveUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel3">Remove User</h4>
+                </div>
+                <form id="FormUserDelete" name="FormUser">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                Are you sure you want to delete the User?
+                                <input type="hidden" class="form-control" id="UserID">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer" align="right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" onclick="return _delete();">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Remove Modal -->
+    <script>
+        window.onload = function () {
+            _getAll();
+        };
+    </script>
+    
+    <script src="~/Callbacks/Callback.js"></script>
+</div>
